@@ -1,17 +1,17 @@
 package com.imos.basics.service;
 
-import com.imos.basics.core.SaveEntityEvent;
 import com.imos.basics.dto.PersonDto;
+import com.imos.basics.exception.DatabaseException;
+import com.imos.basics.exception.DuplicateEntityException;
 import com.imos.basics.model.Person;
 import com.imos.basics.repo.PersonRepo;
+import com.imos.basics.utils.ExceptionHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class PersonService implements IPersonService, ApplicationEventPublisherAware {
+public class PersonService implements IPersonService {
 
   private final PersonRepo personRepo;
   private final ExceptionHandler exceptionHandler;
-
-  private ApplicationEventPublisher applicationEventPublisher;
 
   @Transactional(rollbackFor = DatabaseException.class)
   @Override
@@ -86,10 +84,5 @@ public class PersonService implements IPersonService, ApplicationEventPublisherA
     personDto.setDateOfBirth(person.getDateOfBirth());
     personDto.setMailId(person.getMailId());
     return personDto;
-  }
-
-  @Override
-  public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-    this.applicationEventPublisher = applicationEventPublisher;
   }
 }

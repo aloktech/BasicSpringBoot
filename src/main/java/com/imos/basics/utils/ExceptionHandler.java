@@ -1,5 +1,8 @@
-package com.imos.basics.service;
+package com.imos.basics.utils;
 
+import com.imos.basics.core.ConsumerWithException;
+import com.imos.basics.exception.DatabaseException;
+import com.imos.basics.exception.DuplicateEntityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

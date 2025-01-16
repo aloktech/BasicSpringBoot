@@ -9,8 +9,8 @@ management:
           - info
 spring:
   datasource:
-    password: admin@235
     username: root
+    password: admin@235
     url: jdbc:mysql://localhost:3308/sample_db
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
@@ -18,15 +18,11 @@ spring:
     open-in-view: false
     properties:
       hibernate.format_sql: true
-#  boot:
-#    admin:
-#      client:
-#        url: http://localhost:8081
-basic:
-  base_url: ${BASE_URL:localhost:8087}
-  realm: ${REALM:basic-service}
-  client_id: ${CLIENT_ID:basic-client}
-  client_secret: ${CLIENT_SECRET:JsMTY7Ur8ug4SEVeOljr2XGsadRt0bG4}
+keycloak:
+  base_url: ${KEYCLOAK_BASE_URL:localhost:8087}
+  realm: ${KEYCLOAK_REALM:basic-service}
+  client_id: ${KEYCLOAK_CLIENT_ID:basic-client}
+  client_secret: ${KEYCLOAK_CLIENT_SECRET:JsMTY7Ur8ug4SEVeOljr2XGsadRt0bG4}
 logging:
   level:
     org.springframework: info

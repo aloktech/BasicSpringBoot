@@ -1,4 +1,4 @@
-package com.imos.basics.service;
+package com.imos.basics.exception;
 
 /**
  * Class DatabaseException TODO

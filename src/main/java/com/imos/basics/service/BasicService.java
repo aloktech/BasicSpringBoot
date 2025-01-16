@@ -1,6 +1,6 @@
 package com.imos.basics.service;
 
-import com.imos.basics.core.JdbcException;
+import com.imos.basics.exception.JdbcException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

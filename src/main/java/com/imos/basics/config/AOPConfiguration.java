@@ -1,6 +1,7 @@
-package com.imos.basics.core;
+package com.imos.basics.config;
 
-import com.imos.basics.service.DatabaseException;
+import com.imos.basics.event.SaveEntityEvent;
+import com.imos.basics.exception.DatabaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -28,7 +29,6 @@ public class AOPConfiguration implements ApplicationEventPublisherAware {
     log.info("Database Exception: {}", ex.getMessage());
   }
 
-//  @After("execution(* com.imos.basics.service.*Service.*(..)) && args(entity)")
   @After("execution(* com.imos.basics.repo.*Repo.save(..)) && args(entity)")
   public <T> void saveEntity(T entity) {
     log.info("Saving entity: {}", entity);

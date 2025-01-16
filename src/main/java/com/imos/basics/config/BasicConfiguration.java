@@ -1,5 +1,6 @@
-package com.imos.basics.core;
+package com.imos.basics.config;
 
+import com.imos.basics.core.RequestResponseLoggingFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

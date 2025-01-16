@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
  * Class RestExceptionHandler TODO
@@ -23,5 +23,4 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return ResponseEntity.badRequest()
         .body(FailureResponseMessage.builder().errorMessage(ex.getMessage()).build());
   }
-
 }

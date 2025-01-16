@@ -17,8 +17,8 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @NoArgsConstructor
 @Configuration
-@ConfigurationProperties(prefix = "basic")
-public class SecurityProperty {
+@ConfigurationProperties(prefix = "keycloak")
+public class KeyCloakProperty {
 
   private String baseUrl;
   private String realm;

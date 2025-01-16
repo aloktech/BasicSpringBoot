@@ -5,7 +5,7 @@ import com.imos.basics.core.ResponseMessage;
 import com.imos.basics.core.SuccessResponseListMessage;
 import com.imos.basics.core.SuccessResponseMessage;
 import com.imos.basics.dto.PersonDto;
-import com.imos.basics.service.DatabaseException;
+import com.imos.basics.exception.DatabaseException;
 import com.imos.basics.service.IPersonService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;

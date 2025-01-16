@@ -47,7 +47,7 @@ public class KeyCloakService {
   private static final String ACCESS_TOKEN_URL_FORMAT =
       "http://%s/realms/%s/protocol/openid-connect/token";
 
-  private final SecurityProperty securityProperty;
+  private final KeyCloakProperty keyCloakProperty;
 
   private JwkProvider jwkProvider;
   private String keyCloakAccessTokenUrl;
@@ -56,12 +56,12 @@ public class KeyCloakService {
   public void setUp() {
     keyCloakAccessTokenUrl =
         String.format(
-            ACCESS_TOKEN_URL_FORMAT, securityProperty.getBaseUrl(), securityProperty.getRealm());
+            ACCESS_TOKEN_URL_FORMAT, keyCloakProperty.getBaseUrl(), keyCloakProperty.getRealm());
     log.debug("KeyCloakAccessTokenUrl: {}", keyCloakAccessTokenUrl);
 
     String keyCloakCertUrl =
         String.format(
-            CONNECT_CERTS_URL_FORMAT, securityProperty.getBaseUrl(), securityProperty.getRealm());
+            CONNECT_CERTS_URL_FORMAT, keyCloakProperty.getBaseUrl(), keyCloakProperty.getRealm());
     log.debug("KeyCloakCertUrl: {}", keyCloakCertUrl);
     try {
       jwkProvider = new JwkProviderBuilder(URI.create(keyCloakCertUrl).toURL()).build();
@@ -137,8 +137,8 @@ public class KeyCloakService {
   public String fetchAccessTokenWithRefreshToken(String refreshToken) throws KeyCloakException {
     log.info("Refresh token: {}", refreshToken);
     String grantType = "refresh_token";
-    String clientId = securityProperty.getClientId();
-    String clientSecret = securityProperty.getClientSecret();
+    String clientId = keyCloakProperty.getClientId();
+    String clientSecret = keyCloakProperty.getClientSecret();
     String scope = "email profile";
     Map<String, String> requestBodyMap = new HashMap<>();
     requestBodyMap.put("grant_type", grantType);
@@ -199,13 +199,13 @@ public class KeyCloakService {
 
   public String fetchAccessToken() throws KeyCloakException {
     String grantType = "client_credentials";
-    String clientId = securityProperty.getClientId();
-    String clientSecret = securityProperty.getClientSecret();
+    String clientId = keyCloakProperty.getClientId();
+    String clientSecret = keyCloakProperty.getClientSecret();
     Map<String, String> requestBodyMap = new HashMap<>();
     requestBodyMap.put("grant_type", grantType);
     log.info("Grant Type: {}", grantType);
     requestBodyMap.put("client_id", clientId);
-    log.info("Client ID: {}", securityProperty.getClientId());
+    log.info("Client ID: {}", keyCloakProperty.getClientId());
     requestBodyMap.put("client_secret", clientSecret);
     String requestBody =
         requestBodyMap.entrySet().stream()

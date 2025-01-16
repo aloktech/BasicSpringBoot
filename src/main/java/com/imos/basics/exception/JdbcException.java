@@ -1,4 +1,4 @@
-package com.imos.basics.core;
+package com.imos.basics.exception;
 
 /**
  * Class JdbcException TODO
