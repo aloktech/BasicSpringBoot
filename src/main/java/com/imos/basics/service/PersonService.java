@@ -6,6 +6,7 @@ import com.imos.basics.exception.DuplicateEntityException;
 import com.imos.basics.model.Person;
 import com.imos.basics.repo.PersonRepo;
 import com.imos.basics.utils.ExceptionHandler;
+import com.imos.basics.utils.PersonMapper;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -50,13 +51,7 @@ public class PersonService implements IPersonService {
   }
 
   private static Person convertToPerson(PersonDto personDto) {
-    Person person = new Person();
-    person.setFirstName(personDto.getFirstName());
-    person.setLastName(personDto.getLastName());
-    person.setHeight(personDto.getHeight());
-    person.setDateOfBirth(personDto.getDateOfBirth());
-    person.setMailId(personDto.getMailId());
-    return person;
+    return PersonMapper.INSTANCE.toPerson(personDto);
   }
 
   @Override
@@ -77,12 +72,6 @@ public class PersonService implements IPersonService {
   }
 
   private static PersonDto convertToPersonDto(Person person) {
-    PersonDto personDto = new PersonDto();
-    personDto.setFirstName(person.getFirstName());
-    personDto.setLastName(person.getLastName());
-    personDto.setHeight(person.getHeight());
-    personDto.setDateOfBirth(person.getDateOfBirth());
-    personDto.setMailId(person.getMailId());
-    return personDto;
+    return PersonMapper.INSTANCE.toPersonDto(person);
   }
 }
