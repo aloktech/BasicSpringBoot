@@ -246,6 +246,7 @@ public class KeyCloakService {
       }
     } catch (Exception e) {
       String errorMessage = e.getMessage();
+      log.error("Error fetching access token: {}", e.getMessage());
       if (e instanceof ConnectException) {
         errorMessage =
             new JSONObject()

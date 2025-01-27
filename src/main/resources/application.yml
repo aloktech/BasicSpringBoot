@@ -22,7 +22,7 @@ keycloak:
   base_url: ${KEYCLOAK_BASE_URL:localhost:8087}
   realm: ${KEYCLOAK_REALM:basic-service}
   client_id: ${KEYCLOAK_CLIENT_ID:basic-client}
-  client_secret: ${KEYCLOAK_CLIENT_SECRET:JsMTY7Ur8ug4SEVeOljr2XGsadRt0bG4}
+  client_secret: ${KEYCLOAK_CLIENT_SECRET:l6eLWm2uNsLi3bDStlnxyF4Rl57ePSKq}
 logging:
   level:
     org.springframework: info
