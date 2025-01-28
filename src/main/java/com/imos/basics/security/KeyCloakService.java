@@ -57,7 +57,7 @@ public class KeyCloakService {
     keyCloakAccessTokenUrl =
         String.format(
             ACCESS_TOKEN_URL_FORMAT, keyCloakProperty.getBaseUrl(), keyCloakProperty.getRealm());
-    log.debug("KeyCloakAccessTokenUrl: {}", keyCloakAccessTokenUrl);
+    log.info("KeyCloakAccessTokenUrl: {}", keyCloakAccessTokenUrl);
 
     String keyCloakCertUrl =
         String.format(
@@ -74,8 +74,6 @@ public class KeyCloakService {
     try {
       DecodedJWT decodedJWT = JWT.decode(token);
       Jwk jwk = jwkProvider.get(decodedJWT.getKeyId());
-      //      log.info("Public Key: {}", jwk.getPublicKey());
-      //      log.info("Public Key: {}", new String(jwk.getPublicKey().getEncoded()));
       Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) jwk.getPublicKey());
 
       log.debug("Issuer: {}", decodedJWT.getIssuer());
@@ -91,6 +89,7 @@ public class KeyCloakService {
       return decodedJWT.getSubject();
     } catch (JWTVerificationException | JwkException e) {
       String errorMessage = e.getMessage();
+      log.error(errorMessage);
       if (errorMessage.startsWith("The Token's")) {
         errorMessage = "JWT Token is invalid";
       } else if (errorMessage.startsWith("The input")) {
@@ -99,38 +98,8 @@ public class KeyCloakService {
         errorMessage = "JWT Token is invalid";
       }
       throw new JwtValidationFailedException(errorMessage);
-    }
-  }
-
-  public String validateJwtHS256Token(String token) throws JwtValidationFailedException {
-    try {
-      DecodedJWT decodedJWT = JWT.decode(token);
-      Jwk jwk = jwkProvider.get(decodedJWT.getKeyId());
-      //      log.info("Public Key: {}", jwk.getPublicKey());
-      //      log.info("Public Key: {}", new String(jwk.getPublicKey().getEncoded()));
-      Algorithm algorithm = Algorithm.HMAC256(jwk.getPublicKey().getEncoded());
-
-      log.debug("Issuer: {}", decodedJWT.getIssuer());
-      log.debug("Subject: {}", decodedJWT.getSubject());
-      log.debug("Audience: {}", decodedJWT.getAudience());
-      JWTVerifier verifier =
-          JWT.require(algorithm)
-              .withIssuer(decodedJWT.getIssuer())
-              .withSubject(decodedJWT.getSubject())
-              .withAudience(decodedJWT.getAudience().toArray(new String[0]))
-              .build();
-      verifier.verify(token);
-      return decodedJWT.getSubject();
-    } catch (JWTVerificationException | JwkException e) {
-      String errorMessage = e.getMessage();
-      if (errorMessage.startsWith("The Token's")) {
-        errorMessage = "JWT Token is invalid";
-      } else if (errorMessage.startsWith("The input")) {
-        errorMessage = "JWT Token is invalid";
-      } else if (errorMessage.endsWith("JSON format.")) {
-        errorMessage = "JWT Token is invalid";
-      }
-      throw new JwtValidationFailedException(errorMessage);
+    } catch (Exception e) {
+      throw new JwtValidationFailedException(e.getMessage());
     }
   }
 
@@ -183,10 +152,12 @@ public class KeyCloakService {
         accessTokenBody.remove("token_type");
         return accessTokenBody.toString();
       } else {
+        log.info("Status code: {}", response.statusCode());
         throw new Exception(responseBody);
       }
     } catch (Exception e) {
       String errorMessage = e.getMessage();
+      log.error(errorMessage);
       if (e instanceof ConnectException) {
         errorMessage =
             new JSONObject()
@@ -246,7 +217,7 @@ public class KeyCloakService {
       }
     } catch (Exception e) {
       String errorMessage = e.getMessage();
-      log.error("Error fetching access token: {}", e.getMessage());
+      log.error("{}", errorMessage);
       if (e instanceof ConnectException) {
         errorMessage =
             new JSONObject()

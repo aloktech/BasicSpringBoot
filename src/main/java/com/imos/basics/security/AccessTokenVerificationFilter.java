@@ -42,7 +42,6 @@ public class AccessTokenVerificationFilter extends OncePerRequestFilter {
       String token = authorizationData.substring(7);
       try {
         String subject = keyCloakService.validateJwtRSA256Token(token);
-        //        String subject = keyCloakService.validateJwtHS256Token(token);
 
         log.info("Token Validated");
 
@@ -71,6 +70,6 @@ public class AccessTokenVerificationFilter extends OncePerRequestFilter {
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
     String requestUrl = request.getRequestURI();
-    return requestUrl.contains("/login");
+    return requestUrl.contains("/login") || requestUrl.contains("/actuator") || requestUrl.contains("/favicon.ico");
   }
 }

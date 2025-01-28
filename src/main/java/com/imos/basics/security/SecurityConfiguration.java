@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -57,11 +56,15 @@ public class SecurityConfiguration {
   private static Customizer<
           AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>
       configureAuthorization() {
-    return authorize -> authorize.anyRequest().authenticated();
+    return authorize -> {
+      authorize.requestMatchers("/actuator/**").permitAll();
+      authorize.requestMatchers("/api/**").authenticated();
+    };
   }
 
   private static Customizer<CsrfConfigurer<HttpSecurity>> disableCsrf() {
-    return httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.ignoringRequestMatchers("/api/**");
+    return httpSecurityCsrfConfigurer ->
+        httpSecurityCsrfConfigurer.ignoringRequestMatchers("/**");
   }
 
   //  @Bean

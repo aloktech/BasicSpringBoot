@@ -57,6 +57,7 @@ public class AccessTokenGenerationFilter extends OncePerRequestFilter {
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
     String requestUrl = request.getRequestURI();
-    return !requestUrl.contains("/login");
+    return !requestUrl.contains("/login")
+        && !(requestUrl.contains("/actuator/**") || requestUrl.contains("/favicon.ico"));
   }
 }

@@ -1,23 +1,39 @@
 server:
   port: 8081
 management:
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+      logging:
+        slow-indicator-threshold: 5s
   endpoints:
     web:
       exposure:
         include:
           - health
           - info
+          - metrics
+properties:
+  pageSize: 100
+  offSet: 0
 spring:
   datasource:
-    username: root
-    password: admin@235
-    url: jdbc:mysql://localhost:3308/sample_db
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:admin@235}
+    url: ${DB_URL:jdbc:mysql://localhost:3308/sample_db}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      auto-commit: true
+      driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
     open-in-view: false
     properties:
       hibernate.format_sql: true
+      hibernate.connection.driver_class: com.mysql.cj.jdbc.Driver
 keycloak:
   base_url: ${KEYCLOAK_BASE_URL:localhost:8087}
   realm: ${KEYCLOAK_REALM:basic-service}
@@ -26,5 +42,6 @@ keycloak:
 logging:
   level:
     org.springframework: info
+    com.imos.basics: debug
     #    org.springframework: debug
     org.springframework.security: debug
