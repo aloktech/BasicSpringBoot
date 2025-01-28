@@ -14,10 +14,9 @@ import org.springframework.context.ApplicationListener;
  */
 @Slf4j
 @ToString
-public class UpdateEntityEventListener<T extends ApplicationEvent>
-    implements ApplicationListener<T> {
+public class UpdateEntityEventListener implements ApplicationListener<UpdateEntityEvent<String>> {
   @Override
-  public void onApplicationEvent(T event) {
+  public void onApplicationEvent(UpdateEntityEvent<String> event) {
     log.info("Updating entity: {}", event);
   }
 

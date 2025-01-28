@@ -2,7 +2,6 @@ package com.imos.basics.event;
 
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +15,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @ToString
 @Component
-public class SaveEntityEventListener<T extends ApplicationEvent> implements ApplicationListener<T> {
+public class SaveEntityEventListener implements ApplicationListener<SaveEntityEvent<String>> {
 
   @Override
-  public void onApplicationEvent(T event) {
-    log.info("Saving entity: {}", event);
+  public void onApplicationEvent(SaveEntityEvent<String> event) {
+    log.info("Saving entity: {}", event.getEntity());
   }
 
   @Override
