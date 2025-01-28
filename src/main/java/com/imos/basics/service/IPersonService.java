@@ -23,4 +23,8 @@ public interface IPersonService {
   List<Map<String, Object>> findAddressState(String mailId) throws DatabaseException;
 
   List<PersonDto> findAll() throws DatabaseException;
+
+  List<PersonDto> findAll(int pageSize, int offSet) throws DatabaseException;
+
+  void deleteByMailId(String mailId) throws DatabaseException;
 }

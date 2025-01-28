@@ -8,6 +8,7 @@ import com.imos.basics.dto.PersonDto;
 import com.imos.basics.exception.DatabaseException;
 import com.imos.basics.service.IPersonService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class PersonController {
   private final IPersonService personService;
 
   @PostMapping(consumes = "application/json", produces = "application/json")
-  public ResponseEntity<? extends ResponseMessage<?>> savePerson(@RequestBody PersonDto personDto) {
+  public ResponseEntity<? extends ResponseMessage<?>> savePerson(@Valid @RequestBody PersonDto personDto) {
     try {
       personService.save(personDto);
 
@@ -84,9 +85,15 @@ public class PersonController {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<PersonDto> fetchAllPersons() throws DatabaseException {
+  public List<PersonDto> fetchAllPersons(
+      @RequestParam(value = "page-size", required = false, defaultValue = "0") int pageSize,
+      @RequestParam(value = "off-set", required = false, defaultValue = "0") int offSet)
+      throws DatabaseException {
     try {
-      return personService.findAll();
+      if (pageSize == 0) {
+        return personService.findAll();
+      }
+      return personService.findAll(pageSize, offSet);
     } catch (DatabaseException e) {
       log.error("Error while fetching all entities: {}", e.getMessage());
       throw e;

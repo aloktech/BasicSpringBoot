@@ -1,14 +1,14 @@
 package com.imos.basics.repo;
 
 import com.imos.basics.model.Person;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Interface PersonRepo TODO
@@ -32,4 +32,7 @@ public interface PersonRepo
                   where p.mailId = :mailId
                   """)
   List<Map<String, Object>> findAddressState(String mailId);
+
+  @Transactional
+  void deleteByMailId(String mailId);
 }

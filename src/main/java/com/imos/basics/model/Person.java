@@ -21,6 +21,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "person")
 @ToString
 public class Person implements Serializable {
 

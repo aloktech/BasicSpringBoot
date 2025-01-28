@@ -1,5 +1,6 @@
 package com.imos.basics.service;
 
+import com.imos.basics.config.BasicProperties;
 import com.imos.basics.dto.PersonDto;
 import com.imos.basics.exception.DatabaseException;
 import com.imos.basics.exception.DuplicateEntityException;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PersonService implements IPersonService {
 
+  private final BasicProperties properties;
   private final PersonRepo personRepo;
   private final ExceptionHandler exceptionHandler;
 
@@ -66,9 +69,19 @@ public class PersonService implements IPersonService {
 
   @Override
   public List<PersonDto> findAll() throws DatabaseException {
-    return personRepo.findAll().stream()
+    return findAll(properties.getPageSize(), properties.getOffSet());
+  }
+
+  @Override
+  public List<PersonDto> findAll(int pageSize, int offSet) throws DatabaseException {
+    return personRepo.findAll(PageRequest.of(offSet, pageSize)).stream()
         .map(PersonService::convertToPersonDto)
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public void deleteByMailId(String mailId) throws DatabaseException {
+    personRepo.deleteByMailId(mailId);
   }
 
   private static PersonDto convertToPersonDto(Person person) {
