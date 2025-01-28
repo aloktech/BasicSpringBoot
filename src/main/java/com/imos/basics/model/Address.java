@@ -19,6 +19,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "address")
 @ToString
 public class Address implements Serializable {
 

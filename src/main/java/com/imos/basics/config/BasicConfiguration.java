@@ -1,6 +1,11 @@
 package com.imos.basics.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.imos.basics.core.RequestResponseLoggingFilter;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,5 +30,18 @@ public class BasicConfiguration {
     registrationBean.setOrder(1);
 
     return registrationBean;
+  }
+
+  @Bean
+  public ObjectMapper getObjectMapper() {
+    var objectMapper = new ObjectMapper();
+
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(JSONObject.class, new JSONObjectSerializer());
+    module.addSerializer(JSONArray.class, new JSONArraySerializer());
+    objectMapper.registerModule(module);
+    objectMapper.registerModule(new Jdk8Module());
+
+    return objectMapper;
   }
 }
